@@ -6,14 +6,10 @@ import time
 import math
 from scipy.signal import savgol_filter
 
-# Camera stream
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1280)
 cap.set(cv2.CAP_PROP_FPS, 30)
-# Video stream (optional, not tested)
-# cap = cv2.VideoCapture("video.mp4")
-# Image crop
 w, h =  10, 10
 
 #x_min = 0
@@ -47,24 +43,11 @@ for i in range (nofcrops):
     HBV.append([0]*heartbeat_count)
     HBT.append(now*heartbeat_count)
 now = time.time()
-#HBV = np.array(HBV)
-#HBT = np.array(HBT)
-
-#heartbeat_values = [0]*heartbeat_count
-
-#heartbeat_times = [time.time()]*heartbeat_count
 
 time_zero = np.zeros(nofcrops)
 time_zero += time.time()
 sampling_time = time_zero
 
-
-
-#sys.exit()
-
-# Matplotlib graph surface
-#fig = plt.figure()
-#ax = fig.add_subplot(111)
 
 fig, axs = plt.subplots(2,figsize = (15,9))
 
@@ -74,7 +57,6 @@ PLOTAVG = True
 PLOTVEIN = True
 
 while True:
-    # Capture frame-by-frame
     ret, frame = cap.read()
     img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
@@ -94,7 +76,6 @@ while True:
             
 
             crop_img = img[y:y + h, x:x + w]
-            # Update the data
             HBV[I] = (HBV[I])[1:] + [np.average(crop_img)]
             HBT[I] = (HBT[I])[1:] + [time.time()]
             TIMEV.append(HBV[I])
